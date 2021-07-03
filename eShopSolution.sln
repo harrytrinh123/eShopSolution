@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopSolution.WebApp", "eSh
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E6C909AC-20C7-4835-B359-221362E34233}"
 	ProjectSection(SolutionItems) = preProject
-		REAME.md = REAME.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
