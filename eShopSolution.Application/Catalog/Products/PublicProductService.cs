@@ -1,13 +1,11 @@
-﻿using eShopSolution.Application.Catalog.Products.Dtos;
-using eShopSolution.Application.Catalog.Products.Dtos.Public;
-using eShopSolution.Application.Dtos;
-using eShopSolution.Data.EF;
-using System;
+﻿using eShopSolution.Data.EF;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using eShopSolution.ViewModels.Catalog.Common;
+using eShopSolution.ViewModels.Catalog.Products;
+using eShopSolution.ViewModels.Catalog.Products.Public;
 
 namespace eShopSolution.Application.Catalog.Products
 {
@@ -18,7 +16,8 @@ namespace eShopSolution.Application.Catalog.Products
         {
             _context = context;
         }
-        public async Task<PagedResult<ProductViewModel>> GetAllPaing(GetProductPagingRequest request)
+
+        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetProductPagingRequest request)
         {
             //1. Select join
             var query = from p in _context.Products
@@ -26,15 +25,15 @@ namespace eShopSolution.Application.Catalog.Products
                         join pic in _context.ProductInCategories on p.Id equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.Id
                         select new { p, pt, pic };
-            // 2. Filter
+            //2. filter
             if (request.CategoryId.HasValue && request.CategoryId.Value > 0)
             {
-                query.Where(p => p.pic.CategoryId == request.CategoryId);
+                query = query.Where(p => p.pic.CategoryId == request.CategoryId);
             }
-            // 3. Paging
+            //3. Paging
             int totalRow = await query.CountAsync();
 
-            var data = query.Skip((request.PageIndex - 1) * request.PageSize)
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new ProductViewModel()
                 {
@@ -53,13 +52,15 @@ namespace eShopSolution.Application.Catalog.Products
                     ViewCount = x.p.ViewCount
                 }).ToListAsync();
 
-            // 4. Select and projection
-            var pageResult = new PagedResult<ProductViewModel>()
+            //4. Select and projection
+            var pagedResult = new PagedResult<ProductViewModel>()
             {
                 TotalRecord = totalRow,
-                Items = await data
+                Items = data
             };
-            return pageResult;
+            return pagedResult;
         }
+
+
     }
 }
