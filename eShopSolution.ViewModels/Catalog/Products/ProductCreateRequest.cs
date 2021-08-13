@@ -11,7 +11,6 @@ namespace eShopSolution.ViewModels.Catalog.Products
         public decimal OriginalPrice { set; get; }
         public int Stock { set; get; }
         public int ViewCount { set; get; }
-        public DateTime DateCreated { set; get; }
 
         public string Name { set; get; }
         public string Description { set; get; }
