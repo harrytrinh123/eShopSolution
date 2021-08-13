@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace eShopSolution.Data.EF
 {
@@ -78,7 +79,9 @@ namespace eShopSolution.Data.EF
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
 
-
-
+        public Task FindAsync(int productId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
